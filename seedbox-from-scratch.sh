@@ -251,14 +251,14 @@ getString YES "Password for user $NEWUSER1: " PASSWORD1
 getString NO  "IP address or hostname of your box: " IPADDRESS1 $IPADDRESS1
 getString NO  "SSH port: " NEWSSHPORT1 21976
 getString NO  "vsftp port (usually 21): " NEWFTPPORT1 21201
-getString NO  "OpenVPN port: " OPENVPNPORT1 31195
+#getString NO  "OpenVPN port: " OPENVPNPORT1 31195
 #getString NO  "Do you want to have some of your users in a chroot jail? " CHROOTJAIL1 YES
 getString NO  "Install Webmin? " INSTALLWEBMIN1 YES
 getString NO  "Install Fail2ban? " INSTALLFAIL2BAN1 YES
-getString NO  "Install OpenVPN? " INSTALLOPENVPN1 YES
-getString NO  "Install SABnzbd? " INSTALLSABNZBD1 YES
-getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 YES
-getString NO  "Install Deluge? " INSTALLDELUGE1 YES
+#getString NO  "Install OpenVPN? " INSTALLOPENVPN1 YES
+#getString NO  "Install SABnzbd? " INSTALLSABNZBD1 YES
+#getString NO  "Install Rapidleech? " INSTALLRAPIDLEECH1 YES
+#getString NO  "Install Deluge? " INSTALLDELUGE1 YES
 getString NO  "Wich RTorrent version would you like to install, '0.9.2' or '0.9.3'? " RTORRENT1 0.9.2
 
 if [ "$RTORRENT1" != "0.9.3" ] && [ "$RTORRENT1" != "0.9.2" ]; then
@@ -319,7 +319,7 @@ apt-get --yes upgrade
 #install all needed packages
 
 apt-get --yes build-dep znc
-apt-get --yes install apache2 apache2-utils autoconf build-essential ca-certificates comerr-dev curl cfv quota mktorrent dtach htop irssi libapache2-mod-php5 libcloog-ppl-dev libcppunit-dev libcurl3 libcurl4-openssl-dev libncurses5-dev libterm-readline-gnu-perl libsigc++-2.0-dev libperl-dev openvpn libssl-dev libtool libxml2-dev ncurses-base ncurses-term ntp openssl patch libc-ares-dev pkg-config php5 php5-cli php5-dev php5-curl php5-geoip php5-mcrypt php5-gd php5-xmlrpc pkg-config python-scgi screen ssl-cert subversion texinfo unzip zlib1g-dev expect joe automake1.9 flex bison debhelper binutils-gold ffmpeg libarchive-zip-perl libnet-ssleay-perl libhtml-parser-perl libxml-libxml-perl libjson-perl libjson-xs-perl libxml-libxslt-perl libxml-libxml-perl libjson-rpc-perl libarchive-zip-perl znc tcpdump
+apt-get --yes install apache2 apache2-utils autoconf build-essential ca-certificates comerr-dev curl cfv quota mktorrent dtach htop irssi libapache2-mod-php5 libcloog-ppl-dev libcppunit-dev libcurl3 libcurl4-openssl-dev libncurses5-dev libterm-readline-gnu-perl libsigc++-2.0-dev libperl-dev libssl-dev libtool libxml2-dev ncurses-base ncurses-term ntp openssl patch libc-ares-dev pkg-config php5 php5-cli php5-dev php5-curl php5-geoip php5-mcrypt php5-gd php5-xmlrpc pkg-config python-scgi screen ssl-cert subversion texinfo unzip zlib1g-dev expect joe automake1.9 flex bison debhelper binutils-gold ffmpeg libarchive-zip-perl libnet-ssleay-perl libhtml-parser-perl libxml-libxml-perl libjson-perl libjson-xs-perl libxml-libxslt-perl libxml-libxml-perl libjson-rpc-perl libarchive-zip-perl znc tcpdump
 if [ $? -gt 0 ]; then
   set +x verbose
   echo
@@ -574,6 +574,29 @@ wget http://rutorrent-logoff.googlecode.com/files/logoff-1.0.tar.gz
 tar -zxf logoff-1.0.tar.gz
 rm -f logoff-1.0.tar.gz
 
+# Instalando Pauseplugin
+
+cd /var/www/rutorrent/plugins/
+svn co http://rutorrent-pausewebui.googlecode.com/svn/trunk/ pausewebui
+
+# Instalando lbll-suite
+
+cd /var/www/rutorrent/plugins/
+mkdir lbll-suite
+mv /etc/seedbox/plugins/lbll-suite/* /var/www/rutorrent/lbll-suite
+
+# Instalando NFO Plugin
+
+cd /var/www/rutorrent/plugins/
+wget http://srious.biz/nfo.tar.gz
+tar xzfv nfo.tar.gz
+rm nfo.tar.gz
+
+# Instalando InstantSearch
+
+cd /var/www/rutorrent/plugins/
+svn checkout http://rutorrent-instantsearch.googlecode.com/svn/trunk/ rutorrent-instantsearch
+
 # Installing Filemanager and MediaStream
 
 rm -f -R /var/www/rutorrent/plugins/filemanager
@@ -615,13 +638,13 @@ perl -pi -e "s/\\\$this\-\>userdir \= addslash\(\\\$topDirectory\)\;/\\\$this\-\
 perl -pi -e "s/\\\$topDirectory/\\\$homeDirectory/g" /var/www/rutorrent/plugins/filemanager/settings.js.php
 
 #32.4
-unzip /etc/seedbox-from-scratch/rutorrent-oblivion.zip -d /var/www/rutorrent/plugins/
-echo "" | tee -a /var/www/rutorrent/css/style.css > /dev/null
-echo "/* for Oblivion */" | tee -a /var/www/rutorrent/css/style.css > /dev/null
-echo ".meter-value-start-color { background-color: #E05400 }" | tee -a /var/www/rutorrent/css/style.css > /dev/null
-echo ".meter-value-end-color { background-color: #8FBC00 }" | tee -a /var/www/rutorrent/css/style.css > /dev/null
-echo "::-webkit-scrollbar {width:12px;height:12px;padding:0px;margin:0px;}" | tee -a /var/www/rutorrent/css/style.css > /dev/null
-perl -pi -e "s/\$defaultTheme \= \"\"\;/\$defaultTheme \= \"Oblivion\"\;/g" /var/www/rutorrent/plugins/theme/conf.php
+#unzip /etc/seedbox-from-scratch/rutorrent-oblivion.zip -d /var/www/rutorrent/plugins/
+#echo "" | tee -a /var/www/rutorrent/css/style.css > /dev/null
+#echo "/* for Oblivion */" | tee -a /var/www/rutorrent/css/style.css > /dev/null
+#echo ".meter-value-start-color { background-color: #E05400 }" | tee -a /var/www/rutorrent/css/style.css > /dev/null
+#echo ".meter-value-end-color { background-color: #8FBC00 }" | tee -a /var/www/rutorrent/css/style.css > /dev/null
+#echo "::-webkit-scrollbar {width:12px;height:12px;padding:0px;margin:0px;}" | tee -a /var/www/rutorrent/css/style.css > /dev/null
+#perl -pi -e "s/\$defaultTheme \= \"\"\;/\$defaultTheme \= \"Oblivion\"\;/g" /var/www/rutorrent/plugins/theme/conf.php
 
 ln -s /etc/seedbox-from-scratch/seedboxInfo.php.template /var/www/seedboxInfo.php
 
