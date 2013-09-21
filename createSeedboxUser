@@ -374,13 +374,13 @@ fi
 sudo perl -pi -e "s/<homedir>/$HOMEJAILED1_ESCAPED/g" /etc/init/rtorrent.$NEWUSER1.conf
 sudo perl -pi -e "s/<username>/$NEWUSER1/g" /etc/init/rtorrent.$NEWUSER1.conf
 sudo perl -pi -e "s/<jaildir>/$JAILDIR1_ESCAPED/g" /etc/init/rtorrent.$NEWUSER1.conf
-sudo cp /etc/seedbox-from-scratch/restartSeedbox.template $HOMEJAILED1/restartSeedbox
-sudo perl -pi -e "s/<homedir>/$HOMEJAILED1_ESCAPED/g" $HOMEJAILED1/restartSeedbox
-sudo perl -pi -e "s/<username>/$NEWUSER1/g" $HOMEJAILED1/restartSeedbox
-sudo perl -pi -e "s/<https_port>/$SABNZBDHTTPSPORT1/g" $HOMEJAILED1/restartSeedbox
-sudo perl -pi -e "s/<http_port>/$SABNZBDHTTPPORT1/g" $HOMEJAILED1/restartSeedbox
-sudo chown $NEWUSER1: $HOMEJAILED1/restartSeedbox
-sudo chmod 550 $HOMEJAILED1/restartSeedbox
+sudo cp /etc/seedbox-from-scratch/restartSeedbox.template $HOMEJAILED1/reiniciar
+sudo perl -pi -e "s/<homedir>/$HOMEJAILED1_ESCAPED/g" $HOMEJAILED1/reiniciar
+sudo perl -pi -e "s/<username>/$NEWUSER1/g" $HOMEJAILED1/reiniciar
+sudo perl -pi -e "s/<https_port>/$SABNZBDHTTPSPORT1/g" $HOMEJAILED1/reiniciar
+sudo perl -pi -e "s/<http_port>/$SABNZBDHTTPPORT1/g" $HOMEJAILED1/reiniciar
+sudo chown $NEWUSER1: $HOMEJAILED1/reiniciar
+sudo chmod 550 $HOMEJAILED1/reiniciar
 
 # 22.
 # prepare the tree
@@ -574,9 +574,9 @@ sudo perl -pi -e "s/<PORT>/$IRSSIPORT1/g"  $HOMEJAILED1/.autodl/autodl.cfg
 sudo perl -pi -e "s/use Digest\:\:SHA1 qw/use Digest\:\:SHA qw/g" $HOMEJAILED1/.irssi/scripts/AutodlIrssi/MatchedRelease.pm
 
 if [ "$CHROOTJAIL1" == "YES" ]; then
-  sudo jk_chrootlaunch -u $NEWUSER1 -j $JAILDIR1 -x /bin/bash -- /restartSeedbox
+  sudo jk_chrootlaunch -u $NEWUSER1 -j $JAILDIR1 -x /bin/bash -- /reiniciar
 else
-  sudo su --login --command "$HOMEJAILED1/restartSeedbox" $NEWUSER1
+  sudo su --login --command "$HOMEJAILED1/reiniciar" $NEWUSER1
 fi
 
 sudo chown -R $NEWUSER1:$NEWUSER1  $HOMEJAILED1/.autodl
@@ -642,15 +642,15 @@ echo "OpenVPN config: https://$IPADDRESS1/rutorrent/vpn.zip" | sudo tee -a /etc/
 echo "" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "Starting and restartring commands" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "---------------------------------" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
-echo "Restarting seedbox logged as $NEWUSER1: $HOMEJAILED1/restartSeedbox" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
-echo "Restarting seedbox as any other user: sudo su --login --command \"$HOMEJAILED1/restartSeedbox\" $NEWUSER1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
+echo "Restarting seedbox logged as $NEWUSER1: $HOMEJAILED1/reiniciar" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
+echo "Restarting seedbox as any other user: sudo su --login --command \"$HOMEJAILED1/reiniciar\" $NEWUSER1" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "Starting RTorrent: screen -d -m -S rtorrent rtorrent" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "Starting IRSSI: screen -d -m -S irssi irssi" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 echo "Starting sabnzbdplus: screen -dmS sabnzbd sabnzbdplus" | sudo tee -a /etc/seedbox-from-scratch/users/$NEWUSER1.info
 
-cp /etc/seedbox-from-scratch/users/$NEWUSER1.info $HOMEJAILED1/$NEWUSER1.info
-sudo chown $NEWUSER1: $HOMEJAILED1/$NEWUSER1.info
-sudo chmod 400 $HOMEJAILED1/$NEWUSER1.info
+#cp /etc/seedbox-from-scratch/users/$NEWUSER1.info $HOMEJAILED1/$NEWUSER1.info
+#sudo chown $NEWUSER1: $HOMEJAILED1/$NEWUSER1.info
+#sudo chmod 400 $HOMEJAILED1/$NEWUSER1.info
 
 set +x verbose
 clear
